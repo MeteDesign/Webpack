@@ -1,0 +1,20 @@
+{
+  "name": "webpack-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
+  },
+  "author": "KUICHU",
+  "license": "ISC",
+  "devDependencies": {
+    "css-loader": "^0.28.4",
+    "file-loader": "^0.11.2",
+    "html-webpack-plugin": "^2.29.0",
+    "lodash": "^4.17.4",
+    "style-loader": "^0.18.2",
+    "webpack": "^3.1.0"
+  }
+}
