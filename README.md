@@ -7,7 +7,7 @@ $ cd Webpack
 $ npm install
 ```
 
-**Mention: Please copy this repo to your project directory and  run `npm install` ,  just do what you want  after installed all of packages that this repo dependencies! **
+**Mention: Please copy this repo to your project directory and  run `npm install` ,  just do what you want  after installed all of packages that this repo dependencies!**
 
 PR Welcome！
 
