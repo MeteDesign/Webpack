@@ -33,4 +33,6 @@ $ npm run generdll
 
 PR Welcome！
 
-***Mete Design Group***
+------
+
+**Mete Design Group**
