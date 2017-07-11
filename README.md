@@ -1,7 +1,7 @@
 # MeteDesign Webpack V3.1 
 ## Usage
 
-Before start your project, you should run `npm run generdll` for build dll files!
+Before starting your project, you should run `npm run generdll` for building dll files!
 
 ### Install
 
@@ -29,7 +29,7 @@ $ npm run build
 $ npm run generdll
 ```
 
-**Mention: Please copy this repo to your project directory and  run `npm install` ,  just do what you want  after installed all of packages that this repo dependencies!**
+**NOTICE: Please copy this repository to the root directory of  your project and  run `npm install` ,  just do what you want  after installing all of packages that this repository dependencies!**
 
 PR Welcome！
 
