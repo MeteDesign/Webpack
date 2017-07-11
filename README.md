@@ -35,4 +35,4 @@ PR Welcome！
 
 ------
 
-**Mete Design Group**
+**METE DESIGN GROUP**
