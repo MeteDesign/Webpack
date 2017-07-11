@@ -1,5 +1,8 @@
 .hello{
     color: red;
-    background: url('./assets/images/avatar.jpg');
-
 }
+.time, .img{
+    display: block;
+    line-height: 40px;
+}
+

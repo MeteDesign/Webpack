@@ -5,7 +5,10 @@ const outputPath = path.resolve('dll')
 
 module.exports = {
   devtool: 'source-map',
-  entry: ['moment', 'lodash'],
+  entry: {
+    lodash: ['lodash'],
+    moment: ['moment']
+  },
 
   output: {
     filename: '[name].dll.js',

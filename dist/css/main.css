@@ -1,0 +1,17 @@
+.hello{
+    color: red;
+}
+.time, .img{
+    display: block;
+    line-height: 45px;
+}
+
+.a {
+  color: blue; }
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; }
+
+/*# sourceMappingURL=main.css.map*/
