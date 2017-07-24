@@ -14,21 +14,21 @@ const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const ChunkManifestPlugin = require('chunk-manifest-webpack-plugin')
-// const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin')
-const PreloadWebpackPlugin = require('preload-webpack-plugin')
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
+const InlineManifestWebpackPlugin = require('inline-manifest-webpack-plugin')
+const InlineChunkManifestHtmlWebpackPlugin = require('inline-chunk-manifest-html-webpack-plugin')
 const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin')
+
 /**
  * global variable of config
  */
 // replace localhost with 0.0.0.0 if you want to access
 // your app from wifi or a virtual machine
 const host = process.env.HOST || '0.0.0.0'
-const port = process.env.PORT || 80
+const port = process.env.PORT || 3000
 const allowedHosts = ['192.168.19.61']
 const sourcePath = path.join(__dirname, './src')
 const distPath = path.join(__dirname, './dist')
-const htmlTemplate = './index.template.html'
+const htmlTemplate = './index.template.ejs'
 const stats = {
   assets: true,
   children: false,
@@ -79,17 +79,8 @@ module.exports = function (env) {
       'process.env': { NODE_ENV: JSON.stringify(nodeEnv) }
     }),
 
-    // preload chunks
-    new PreloadWebpackPlugin(),
-
-    new ChunkManifestPlugin({
-      filename: 'manifest.json',
-      manifestVariable: 'webpackManifest',
-      inlineManifest: false
-    }),
-
     // create css bundle
-    new ExtractTextPlugin('./css/[name].css'),
+    new ExtractTextPlugin({filename: isProd ? 'css/[name]-[contenthash].css' : 'css/[name].css', allChunks: true}),
 
     // create index.html
     new HtmlWebpackPlugin({
@@ -108,12 +99,19 @@ module.exports = function (env) {
         minifyCSS: true,
         minifyURLs: true
       }
+    }),
+    new InlineManifestWebpackPlugin({
+      name: 'webpackManifest'
+    }),
+    new InlineChunkManifestHtmlWebpackPlugin({
+      manifestPlugins: [
+        new ChunkManifestPlugin({
+          filename: 'manifest.json',
+          manifestVariable: 'webpackManifest',
+          inlineManifest: false
+        })
+      ]
     })
-     // make sure script tags are async to avoid blocking html render
-    // ---!!!has remove!!!---
-    // new ScriptExtHtmlWebpackPlugin({
-    //   defaultAttribute: 'async'
-    // })
   ]
   if (isProd) {
     /**
@@ -121,20 +119,22 @@ module.exports = function (env) {
      */
     plugins.push(
       // minify remove some of the dead code
-      new UglifyJSPlugin({
-        compress: {
-          warnings: false,
-          screw_ie8: true,
-          conditionals: true,
-          unused: true,
-          comparisons: true,
-          sequences: true,
-          dead_code: true,
-          evaluate: true,
-          if_return: true,
-          join_vars: true
-        }
-      })
+     new webpack.optimize.UglifyJsPlugin({
+       compress: {
+         warnings: false,
+         screw_ie8: true,
+         conditionals: true,
+         unused: true,
+         comparisons: true,
+         sequences: true,
+         dead_code: true,
+         evaluate: true,
+         if_return: true,
+         join_vars: true
+       },
+       mangle: false
+     }),
+      new webpack.optimize.ModuleConcatenationPlugin()
     )
   } else {
     /**
@@ -148,25 +148,29 @@ module.exports = function (env) {
       // don't spit out any errors in compiled assets
       new webpack.NoEmitOnErrorsPlugin(),
       // load DLL files
-      new webpack.DllReferencePlugin({context: __dirname, manifest: require('./dll/moment-manifest.json')}),
-      new webpack.DllReferencePlugin({context: __dirname, manifest: require('./dll/lodash-manifest.json')}),
+      new webpack.DllReferencePlugin({context: __dirname, manifest: require('./dll/react_manifest.json')}),
+      new webpack.DllReferencePlugin({context: __dirname, manifest: require('./dll/react_dom_manifest.json')}),
+      new webpack.DllReferencePlugin({context: __dirname, manifest: require('./dll/react_router_dom_manifest.json')}),
       // make DLL assets available for the app to download
       new AddAssetHtmlPlugin([
-        { filepath: require.resolve('./dll/moment.dll.js') },
-        { filepath: require.resolve('./dll/lodash.dll.js') }
+        { filepath: require.resolve('./dll/react.dll.js') },
+        { filepath: require.resolve('./dll/react_dom.dll.js') },
+        { filepath: require.resolve('./dll/react_router_dom.dll.js') }
       ])
     )
   }
   return {
     devtool: isProd ? 'source-map' : 'cheap-module-source-map',
     entry: {
-      main: path.join(sourcePath, 'index.js'),
+      main: ['babel-polyfill', path.join(sourcePath, 'index.js')],
       // static lib
-      vendor: ['lodash', 'moment']
+      vendor: ['react', 'react-dom', 'react-router-dom']
     },
     output: {
-      filename: 'js/[name].bundle.js',
-      path: distPath
+      filename: isProd ? 'js/[name]-[chunkhash].bundle.js' : 'js/[name].bundle.js',
+      chunkFilename: isProd ? 'js/[id]-[chunkhash].bundle.js' : 'js/[id].bundle.js',
+      path: distPath,
+      publicPath: './'
     },
      // loader
     module: {
@@ -178,10 +182,10 @@ module.exports = function (env) {
           use: {
             loader: 'babel-loader',
             options: {
-              presets: [['es2015', { 'modules': false }]],
+              presets: [['es2015', { 'modules': false }], 'react', 'stage-0'],
               cacheDirectory: true
               // Since babel-plugin-transform-runtime includes a polyfill that includes a custom regenerator runtime and core.js, the following usual shimming method using webpack.ProvidePlugin will not work:
-              // plugins: ['transform-runtime']
+
             }
           }
         },
@@ -189,7 +193,13 @@ module.exports = function (env) {
         {
           test: /\.css$/,
           use: ExtractTextPlugin.extract({
-            use: 'css-loader'
+            fallback: 'style-loader',
+            use: [{
+              loader: 'css-loader',
+              options: {
+                minimize: isProd
+              }}],
+            publicPath: '/'
           })
         },
       // scss loader
@@ -197,22 +207,27 @@ module.exports = function (env) {
           test: /\.scss$/,
           exclude: /node_modules/,
           use: ExtractTextPlugin.extract({
+            publicPath: '/',
             fallback: 'style-loader',
             use: [
+              // {loader: 'autoprefixer-loader'},
+
               {
-                loader: 'css-loader'
-                // options: {
-                //   module: true, // css-loader 0.14.5 compatible
-                //   modules: true
-                //   // localIdentName: '[hash:base64:5]'
-                // }
+                loader: 'css-loader',
+                options: {
+                  // module: true, // css-loader 0.14.5 compatible
+                  // modules: true
+                  // localIdentName: '[hash:base64:5]'
+                  // importLoaders: 1,
+                  minimize: isProd
+                }
               },
               {
                 loader: 'sass-loader',
                 options: {
-                  outputStyle: 'collapsed',
+                  // outputStyle: 'collapsed',
                   sourceMap: true,
-                  includePaths: [sourcePath]
+                  includePaths: [sourcePath, path.join(__dirname, './src')]
                 }
               }
             ]
@@ -221,9 +236,19 @@ module.exports = function (env) {
       // images loader
         {
           test: /\.(png|svg|jpg|gif)$/,
-          use: [
-            'file-loader?name=[name]-[hash].[ext]&outputPath=assets/images/'
-          ]
+          loader: 'url-loader?limit=8024&name=assets/images/[name]-[hash].[ext]'
+
+        },
+        {
+          test: /\.(woff2?|otf|eot|ttf)$/i,
+          loader: 'url-loader?limit=8024&name=assets/fonts/[name].[ext]',
+          options: {
+            publicPath: distPath
+          }
+        },
+        {
+          test: /\.md$/,
+          loader: 'raw-loader'
         }
       ]
     },

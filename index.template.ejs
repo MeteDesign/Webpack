@@ -1,0 +1,19 @@
+<html>
+  <head>
+    <title>Mete Design</title>
+    <meta charset="utf-8">
+    <style>
+        *{padding: 0;margin: 0;box-sizing: border-box}
+        li{list-style: none}
+        a{text-decoration: none}
+        html,body{width: 100%;height: 100%;font-family: "Helvetica Neue",Arial,STHeiti,"Microsoft YaHei",sans-serif,Helvetica,"DroidSansFallback",FreeSans,Arimo,"Droid Sans","wenquanyi micro hei","Hiragino Sans GB","Hiragino Sans GB W3"}
+  </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.1.0/leaflet.css" />
+    <!--  manifest.json variable  -->
+  </head>
+  <body>
+    <div id='root'></div>
+    <!--  webpack running time  -->
+    <%=htmlWebpackPlugin.files.webpackManifest%>
+  </body>
+</html>
