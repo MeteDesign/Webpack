@@ -13,7 +13,6 @@ const webpack = require('webpack')
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
-const ChunkManifestPlugin = require('chunk-manifest-webpack-plugin')
 const InlineManifestWebpackPlugin = require('inline-manifest-webpack-plugin')
 const InlineChunkManifestHtmlWebpackPlugin = require('inline-chunk-manifest-html-webpack-plugin')
 const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin')
@@ -103,15 +102,7 @@ module.exports = function (env) {
     new InlineManifestWebpackPlugin({
       name: 'webpackManifest'
     }),
-    new InlineChunkManifestHtmlWebpackPlugin({
-      manifestPlugins: [
-        new ChunkManifestPlugin({
-          filename: 'manifest.json',
-          manifestVariable: 'webpackManifest',
-          inlineManifest: false
-        })
-      ]
-    })
+    new InlineChunkManifestHtmlWebpackPlugin()
   ]
   if (isProd) {
     /**
