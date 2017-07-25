@@ -11,7 +11,7 @@ const Index = () => (
     <h2>Mete Design Webpack V3</h2>
     <h4>Thanks for using</h4>
     <h4>Github Repo: <a target='_blank' href='https://github.com/MeteDesign/Webpack'>MeteDesign/Webpack</a></h4>
-    <h3>Contributors: <a target='_blank' href='https://github.com/godotdotdot'>KUI CHU</a></h3>
+    <h3>Contributors: <a target='_blank' href='https://github.com/godotdotdot'>GoDotDotDot</a></h3>
     <hr />
     <img src={require('./assets/images/logo.png')} alt='logo' />
     <h4>METE DESIGN GROUP</h4>
