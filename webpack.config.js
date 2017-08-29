@@ -1,9 +1,9 @@
 /**
  *METE DESIGN WEBPACK V3.1 CONFIGURES
  *METE DESIGN GROUP
- *SUPERMAP METEOROLOGY DEPARTMENT
- *储奎 / KUI CHU
+ *储奎 / KUI CHU / GoDotDotDot
  *2017-07-10
+ *github: https://github.com/MeteDesign/Webpack
 */
 
 /**
