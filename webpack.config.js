@@ -44,7 +44,7 @@ const stats = {
  * webpack config
  */
 module.exports = function (env) {
-  const nodeEnv = env && env.production ? 'production' : 'development'
+  const nodeEnv = process.env.NODE_ENV === "production" ? process.env.NODE_ENV : "development"
   const isProd = nodeEnv === 'production'
   /**
    * Mete Design Webpack V3.1 Buiding Informations
@@ -114,17 +114,14 @@ module.exports = function (env) {
      new webpack.optimize.UglifyJsPlugin({
        compress: {
          warnings: false,
-         screw_ie8: true,
          conditionals: true,
          unused: true,
          comparisons: true,
          sequences: true,
          dead_code: true,
-         evaluate: true,
          if_return: true,
          join_vars: true
-       },
-       mangle: false
+       }
      }))
   } else {
     /**
