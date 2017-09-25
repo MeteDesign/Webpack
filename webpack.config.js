@@ -54,7 +54,6 @@ module.exports = function (env) {
   console.log('host:' + host)
   console.log('port:' + port)
   console.log('dist path:' + distPath)
-  console.log('platform:' + env.platform)
   console.log('-----------------Mete Design Group------------------')
   /**
    * common plugin
