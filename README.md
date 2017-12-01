@@ -2,17 +2,19 @@
 
 Webpack configurations for `react` and `ant-design`. 
 
-We provide some common configurations that can reduce a lot of time when you learn how to config webpack for developing.Enjoy you trip!
+We provide some common configurations that saves a lot of time when you initially learn how to config webpack for developing.
 
-**We are only the porters of the Internet**
+Happy coding!
+
+**We are nothing but porters of the Internet!**
 
 ## Usage
 
 Before starting your project, you should run `npm run generdll` for building dll files!
 
-### Install
+### Installation
 
-```javascript
+``` bash
 $ git clone https://github.com/MeteDesign/Webpack.git
 $ cd Webpack
 $ npm install
@@ -20,55 +22,55 @@ $ npm install
 
 ### Development Environment
 
-```javascript
+``` bash
 $ npm run dev
 ```
 
 ### Production Environment
 
-```javascript
+``` bash
 $ npm run build
 ```
 
 ### DLL Build
 
-```javascript
+``` bash
 $ npm run generdll
 ```
 
-When you run `npm run dev` and open browser at `localhost:4000`, you will see the welcome page as the following picture show,
+When you run `npm run dev` and open browser, navigationg to `localhost:4000`, you will see the welcome page shown as the following picture,
 
 ![](http://blog.godotdotdot.com/static/metedesign_antd.png)
 
-When you type `localhost:4000/login.html`, you will see the login page as the following picture show:
+When you type `localhost:4000/login.html`, you will see the login page, it looks like:
 
 ![](http://blog.godotdotdot.com/static/metedesign_login.png)
 
+In this project, we use two entry files (including main and login).
 
-
-In this project,we use two entry files(main and login).As the above picture show,The design we refers to [ant-design-pro](https://preview.pro.ant.design/#/dashboard/analysis).
+As shown in the above picture, our design is based on [ant-design-pro](https://preview.pro.ant.design/#/dashboard/analysis).
 
 ## Features
 
-In this configuration, you can use some following features:
+In this configuration, the following features have been implemented:
 
-- Etract commons chunk
-- Lazyload(react component)
-- DLL surport
-- Etract css styles to a single file
-- Multipart entry surport
-- Hot module relacement
-- Long  term cache surport
-- Postcss  surport
-- sass/less/css surport
-- Minify remove some of the dead code
+- Extract common chunks
+- Lazyloading (react component)
+- DLL support
+- Extract css styles to a single file
+- Multipart entry support
+- Hot module replacement
+- Long term cache support
+- Postcss support
+- sass/less/css support
+- dead code removal and minification
 - ...
 
-More features will be find in `webpack.config.js`
+More features can be found in `webpack.config.js`.
 
-**NOTICE: Please copy this repository to the root directory of  your project and  run `yarn` or `npm install` ,  just do what you want  after installing all of packages that this repository dependencies!**
+**NOTICE: Please copy this repository to the root directory of your project and run `yarn` or `npm install`. You will be good to go after installing all packages this repository depends on!**
 
-PR Welcome！
+Your PR is always Welcome！
 
 ------
 
