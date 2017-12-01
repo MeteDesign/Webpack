@@ -22,7 +22,7 @@ const CleanWebpackPlugin = require('clean-webpack-plugin')
 // replace localhost with 0.0.0.0 if you want to access
 // your app from wifi or a virtual machine
 const host = process.env.HOST || '0.0.0.0'
-const port = process.env.PORT || 4010
+const port = process.env.PORT || 4000
 const allowedHosts = ['192.168.19.61']
 const sourcePath = path.join(__dirname, './src')
 const distPath = path.join(__dirname, './dist')
