@@ -1,4 +1,10 @@
 # MeteDesign Webpack V3.1 
+We provide some common configurations that can reduce a lot of time when you learn how to config webpack for developing.
+
+**We are only the porters of the Internet**
+
+This is a basic environment of webpack for react. We also provide another version for [ant-design](https://ant.design/),please switch `antdesign` branch.
+
 ## Usage
 
 Before starting your project, you should run `npm run generdll` for building dll files!
@@ -29,7 +35,24 @@ $ npm run build
 $ npm run generdll
 ```
 
-**NOTICE: Please copy this repository to the root directory of  your project and  run `npm install` ,  just do what you want  after installing all of packages that this repository dependencies!**
+## Features
+
+In this configuration, you can use some following features:
+
+- Etract commons chunk
+- DLL surport
+- Etract css styles to a single file
+- Multipart entry surport
+- Hot module relacement
+- Long  term cache surport
+- Postcss  surport
+- sass/less/css surport
+- Minify remove some of the dead code
+- ...
+
+More features will be find in `webpack.config.js`
+
+**NOTICE: Please copy this repository to the root directory of  your project and  run `yarn` or `npm install` ,  just do what you want  after installing all of packages that this repository dependencies!**
 
 PR Welcome！
 
