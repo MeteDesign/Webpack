@@ -44,7 +44,7 @@ const stats = {
  * webpack config
  */
 module.exports = function (env) {
-  const nodeEnv = process.env.NODE_ENV === "production" ? process.env.NODE_ENV : "development"
+  const nodeEnv = process.env.NODE_ENV === 'production' ? process.env.NODE_ENV : 'development'
   const isProd = nodeEnv === 'production'
   /**
    * Mete Design Webpack V3.1 Buiding Informations
@@ -134,15 +134,10 @@ module.exports = function (env) {
       // don't spit out any errors in compiled assets
       new webpack.NoEmitOnErrorsPlugin(),
       // load DLL files
-      new webpack.DllReferencePlugin({context: __dirname, manifest: require('./dll/react_manifest.json')}),
-      new webpack.DllReferencePlugin({context: __dirname, manifest: require('./dll/react_dom_manifest.json')}),
-      new webpack.DllReferencePlugin({context: __dirname, manifest: require('./dll/react_router_dom_manifest.json')}),
+      new webpack.DllReferencePlugin({context: __dirname, manifest: require('./dll/react_vendor.json')}),
+
       // make DLL assets available for the app to download
-      new AddAssetHtmlPlugin([
-        { filepath: require.resolve('./dll/react.dll.js') },
-        { filepath: require.resolve('./dll/react_dom.dll.js') },
-        { filepath: require.resolve('./dll/react_router_dom.dll.js') }
-      ])
+      new AddAssetHtmlPlugin({ filepath: require.resolve('./dll/react_vendor.dll.js') })
     )
   }
   return {
