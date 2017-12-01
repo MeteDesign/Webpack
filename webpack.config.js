@@ -134,7 +134,7 @@ module.exports = function (env) {
       // don't spit out any errors in compiled assets
       new webpack.NoEmitOnErrorsPlugin(),
       // load DLL files
-      new webpack.DllReferencePlugin({context: __dirname, manifest: require('./dll/react_vendor.json')}),
+      new webpack.DllReferencePlugin({context: __dirname, manifest: require('./dll/react_vendor_manifest.json')}),
 
       // make DLL assets available for the app to download
       new AddAssetHtmlPlugin({ filepath: require.resolve('./dll/react_vendor.dll.js') })

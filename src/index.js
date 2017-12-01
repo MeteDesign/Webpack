@@ -13,7 +13,6 @@ const Index = () => (
     <h4>Github Repo: <a target='_blank' href='https://github.com/MeteDesign/Webpack'>MeteDesign/Webpack</a></h4>
     <h3>Contributors: <a target='_blank' href='https://github.com/godotdotdot'>GoDotDotDot</a></h3>
     <hr />
-    <img src={require('./assets/images/logo.png')} alt='logo' />
     <h4>METE DESIGN GROUP</h4>
     <img src={require('./assets/images/md.png')} alt='md' style={{width: 85, height: 85}} />
   </div>
