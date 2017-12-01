@@ -1,0 +1,68 @@
+.login{
+  height: 100%;
+  background: url('../../../assets/images/bacground.svg');
+  padding: 150px 0 0 0;
+  .title{
+    text-align: center;
+    padding: 20px;
+    font-size: 16px;
+    color: rgba(0,0,0,0.45)
+  }
+  .logo{
+    text-align: center;
+    h1{
+      vertical-align: middle;
+      font-size: 33px;
+      color:#697b8c;
+      img,span{
+        vertical-align: middle;
+        height: 40px;
+      }
+      span{
+        padding-left: 20px;
+      }
+    }
+  }
+  .ant-form-item{
+    // height: 35px;
+  }
+  .ant-input-affix-wrapper .ant-input {
+    min-height: auto;
+}
+  .ant-form,.message{
+    width: 265px;
+    margin: auto;
+  }
+  .ant-row{
+    // height:35px;
+  }
+  .ant-input{
+    background:#f0f2f5;
+  }
+  .forgetPassword{
+    // float: right;
+  }
+  .forgetPassword::after{
+    content:'';
+    height:0;
+    display: block;
+    clear:both;
+  }
+  .register{
+    // float: right;
+  }
+  .register::after{
+    content:'';
+    height:0;
+    display: block;
+    clear:both;
+  }
+  .ant-btn{
+    width:100%;
+  }
+  .otherLogin{
+    width: 20%;
+    margin: auto;
+    padding: 40px 0px;
+  }
+}

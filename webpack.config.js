@@ -11,6 +11,7 @@
  */
 const webpack = require('webpack')
 const path = require('path')
+const fs = require('fs')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin')
@@ -21,7 +22,7 @@ const CleanWebpackPlugin = require('clean-webpack-plugin')
 // replace localhost with 0.0.0.0 if you want to access
 // your app from wifi or a virtual machine
 const host = process.env.HOST || '0.0.0.0'
-const port = process.env.PORT || 8080
+const port = process.env.PORT || 4010
 const allowedHosts = ['192.168.19.61']
 const sourcePath = path.join(__dirname, './src')
 const distPath = path.join(__dirname, './dist')
@@ -40,11 +41,13 @@ const stats = {
     green: '\u001b[32m'
   }
 }
+const lessToJs = require('less-vars-to-js')
+const themeVariables = lessToJs(fs.readFileSync(path.join(__dirname, 'src/theme.less'), 'utf8'))
 /**
  * webpack config
  */
 module.exports = function (env) {
-  const nodeEnv = process.env.NODE_ENV === "production" ? process.env.NODE_ENV : "development"
+  const nodeEnv = process.env.NODE_ENV === 'production' ? process.env.NODE_ENV : 'development'
   const isProd = nodeEnv === 'production'
   /**
    * Mete Design Webpack V3.1 Buiding Informations
@@ -81,6 +84,28 @@ module.exports = function (env) {
     // create index.html
     new HtmlWebpackPlugin({
       template: htmlTemplate,
+      inject: true,
+      excludeChunks: ['login'],
+      production: isProd,
+      minify: isProd && {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeRedundantAttributes: true,
+        useShortDoctype: true,
+        removeEmptyAttributes: true,
+        removeStyleLinkTypeAttributes: true,
+        keepClosingSlash: true,
+        minifyJS: true,
+        minifyCSS: true,
+        minifyURLs: true
+      }
+    }),
+    // create login.html
+    new HtmlWebpackPlugin({
+      template: './login.template.ejs',
+      filename: 'login.html',
+      // chunks: ['vendor','index'],
+      excludeChunks: ['main'],
       inject: true,
       production: isProd,
       minify: isProd && {
@@ -134,29 +159,32 @@ module.exports = function (env) {
       // don't spit out any errors in compiled assets
       new webpack.NoEmitOnErrorsPlugin(),
       // load DLL files
-      new webpack.DllReferencePlugin({context: __dirname, manifest: require('./dll/react_manifest.json')}),
-      new webpack.DllReferencePlugin({context: __dirname, manifest: require('./dll/react_dom_manifest.json')}),
-      new webpack.DllReferencePlugin({context: __dirname, manifest: require('./dll/react_router_dom_manifest.json')}),
-      // make DLL assets available for the app to download
-      new AddAssetHtmlPlugin([
-        { filepath: require.resolve('./dll/react.dll.js') },
-        { filepath: require.resolve('./dll/react_dom.dll.js') },
-        { filepath: require.resolve('./dll/react_router_dom.dll.js') }
-      ])
+      new webpack.DllReferencePlugin({context: __dirname, manifest: require('./dll/react_vendor_manifest.json')}),
+      // new webpack.DllReferencePlugin({context: __dirname, manifest: require('./dll/react_dom_manifest.json')}),
+      // new webpack.DllReferencePlugin({context: __dirname, manifest: require('./dll/react_router_dom_manifest.json')}),
+      // // make DLL assets available for the app to download
+      // new AddAssetHtmlPlugin([
+      //   { filepath: require.resolve('./dll/react.dll.js') },
+      //   { filepath: require.resolve('./dll/react_dom.dll.js') },
+      //   { filepath: require.resolve('./dll/react_router_dom.dll.js') }
+      // ])
+      new AddAssetHtmlPlugin({ filepath: require.resolve('./dll/react_vendor.dll.js') })
     )
   }
   return {
     devtool: isProd ? 'source-map' : 'cheap-module-source-map',
     entry: {
-      main: ['babel-polyfill', path.join(sourcePath, 'index.js')],
+      main: path.join(sourcePath, 'index.js'),
+      login: path.join(sourcePath, 'login.js'),
+
       // static lib
-      vendor: ['react', 'react-dom', 'react-router-dom']
+      vendor: ['react', 'react-dom', 'react-router-dom', 'babel-polyfill']
     },
     output: {
       filename: isProd ? 'js/[name]-[chunkhash].bundle.js' : 'js/[name].bundle.js',
       chunkFilename: isProd ? 'js/[id]-[chunkhash].bundle.js' : 'js/[id].bundle.js',
       path: distPath,
-      publicPath: './'
+      publicPath: '/'
     },
      // loader
     module: {
@@ -169,11 +197,14 @@ module.exports = function (env) {
             loader: 'babel-loader',
             options: {
               presets: [['es2015', { 'modules': false }], 'react', 'stage-0'],
-              cacheDirectory: true
+              cacheDirectory: true,
               // Since babel-plugin-transform-runtime includes a polyfill that includes a custom regenerator runtime and core.js, the following usual shimming method using webpack.ProvidePlugin will not work:
-
+              plugins: [
+                ['import', { libraryName: 'antd', style: true }] // `style: true` 会加载 less 文件
+              ]
             }
           }
+
         },
       // css loader
         {
@@ -184,7 +215,7 @@ module.exports = function (env) {
               loader: 'css-loader',
               options: {
                 minimize: isProd
-              }}],
+              }}, 'postcss-loader'],
             publicPath: '/'
           })
         },
@@ -209,6 +240,9 @@ module.exports = function (env) {
                 }
               },
               {
+                loader: 'postcss-loader'
+              },
+              {
                 loader: 'sass-loader',
                 options: {
                   // outputStyle: 'collapsed',
@@ -219,11 +253,45 @@ module.exports = function (env) {
             ]
           })
         },
+        // less loader
+        {
+          test: /\.less$/,
+          use: ExtractTextPlugin.extract({
+            publicPath: '/',
+            fallback: 'style-loader',
+            use: [
+              {
+                loader: 'css-loader',
+                options: {
+                  // module: true, // css-loader 0.14.5 compatible
+                  // modules: true
+                  // localIdentName: '[hash:base64:5]'
+                  // importLoaders: 1,
+                  minimize: isProd
+                }
+              },
+              {
+                loader: 'postcss-loader'
+              },
+              {
+                loader: 'less-loader',
+                options: {
+                  // outputStyle: 'collapsed',
+                  modifyVars: themeVariables,
+                  sourceMap: true,
+                  includePaths: [sourcePath, path.join(__dirname, './src')]
+                }
+              }
+            ]
+          })
+        },
       // images loader
         {
           test: /\.(png|svg|jpg|gif)$/,
-          loader: 'url-loader?limit=8024&name=assets/images/[name]-[hash].[ext]'
-
+          loader: 'url-loader?limit=8024&name=assets/images/[name]-[hash].[ext]',
+          options: {
+            publicPath: '/'
+          }
         },
         {
           test: /\.(woff2?|otf|eot|ttf)$/i,
