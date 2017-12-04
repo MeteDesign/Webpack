@@ -1,8 +1,10 @@
 # MeteDesign Webpack V3.1
 
-We provide some common configurations that can reduce a lot of time when you learn how to config webpack for developing.Enjoy you trip!
+We provide some common configurations that saves a lot of time when you initially learn how to config webpack for developing.
 
-**We are only the porters of the Internet**
+Happy coding!
+
+**We are nothing but porters of the Internet!**
 
 This is a basic environment of webpack for react. We also provide another version for [ant-design](https://ant.design/),please switch to  `antdesign` branch.
 
@@ -10,7 +12,7 @@ This is a basic environment of webpack for react. We also provide another versio
 
 Before starting your project, you should run `npm run generdll` for building dll files!
 
-### Install
+### Installation
 
 ```javascript
 $ git clone https://github.com/MeteDesign/Webpack.git
@@ -36,13 +38,13 @@ $ npm run build
 $ npm run generdll
 ```
 
-When you run `npm run dev` and open browser at `localhost:4000`, you will see the welcome page as the following picture show,
+When you run npm run dev and open browser, navigationg to localhost:4000, you will see the welcome page shown as the following picture,
 
 ![](http://blog.godotdotdot.com/static/metedesign_basic.png)
 
 ## Features
 
-In this configuration, you can use some following features:
+In this configuration, the following features have been implemented:
 
 - Etract commons chunk
 - DLL surport
@@ -55,11 +57,11 @@ In this configuration, you can use some following features:
 - Minify remove some of the dead code
 - ...
 
-More features will be find in `webpack.config.js`
+More features can be found in webpack.config.js.
 
-**NOTICE: Please copy this repository to the root directory of  your project and  run `yarn` or `npm install` ,  just do what you want  after installing all of packages that this repository dependencies!**
+**NOTICE: Please copy this repository to the root directory of your project and run yarn or npm install. You will be good to go after installing all packages this repository depends on!**
 
-PR Welcome！
+Your PR is always Welcome！
 
 ------
 
