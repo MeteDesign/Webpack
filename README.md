@@ -6,6 +6,8 @@ We provide some common configurations that saves a lot of time when you initiall
 
 Happy coding!
 
+Blog site: http://blog.godotdotdot.com/2017/12/01/%E5%9F%BA%E4%BA%8Ewebpack-3-x-react-v16-antdesign%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/
+
 **We are nothing but porters of the Internet!**
 
 ## Usage
