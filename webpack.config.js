@@ -135,18 +135,18 @@ module.exports = function (env) {
       new CleanWebpackPlugin(['dist']),
       new webpack.HashedModuleIdsPlugin(),
       // minify remove some of the dead code
-     new webpack.optimize.UglifyJsPlugin({
-       compress: {
-         warnings: false,
-         conditionals: true,
-         unused: true,
-         comparisons: true,
-         sequences: true,
-         dead_code: true,
-         if_return: true,
-         join_vars: true
-       }
-     }))
+      new webpack.optimize.UglifyJsPlugin({
+        compress: {
+          warnings: false,
+          conditionals: true,
+          unused: true,
+          comparisons: true,
+          sequences: true,
+          dead_code: true,
+          if_return: true,
+          join_vars: true
+        }
+      }))
   } else {
     /**
      * development enviroment plugin
@@ -186,7 +186,7 @@ module.exports = function (env) {
       path: distPath,
       publicPath: '/'
     },
-     // loader
+    // loader
     module: {
       rules: [
       // js or jsx loader
@@ -206,7 +206,7 @@ module.exports = function (env) {
           }
 
         },
-      // css loader
+        // css loader
         {
           test: /\.css$/,
           use: ExtractTextPlugin.extract({
@@ -219,7 +219,7 @@ module.exports = function (env) {
             publicPath: '/'
           })
         },
-      // scss loader
+        // scss loader
         {
           test: /\.scss$/,
           exclude: /node_modules/,
@@ -285,7 +285,7 @@ module.exports = function (env) {
             ]
           })
         },
-      // images loader
+        // images loader
         {
           test: /\.(png|svg|jpg|gif)$/,
           loader: 'url-loader?limit=8024&name=assets/images/[name]-[hash].[ext]',
@@ -316,24 +316,25 @@ module.exports = function (env) {
     stats,
     // webpack dev server
     devServer: {
-    // 文件路劲，一般静态文件需要
+      historyApiFallback: true,
+      // 文件路劲，一般静态文件需要
       contentBase: path.join(__dirname, 'src'),
-    // 是否启用gzip压缩
+      // 是否启用gzip压缩
       compress: true,
-    // 是否启用热替换
+      // 是否启用热替换
       hot: true,
       port,
-    // 开启任意ip访问
+      // 开启任意ip访问
       host,
-    // 允许列表中host访问
+      // 允许列表中host访问
       allowedHosts,
-    // 取消host列表安全检查，开发环境启用，默认关闭，开启则allowedHosts无效
-    // disableHostCheck: true,
-    // 关闭webpack重启打包信息，错误和警告仍然会显示
+      // 取消host列表安全检查，开发环境启用，默认关闭，开启则allowedHosts无效
+      // disableHostCheck: true,
+      // 关闭webpack重启打包信息，错误和警告仍然会显示
       noInfo: true,
-    // 浏览器全屏显示编译器错误信息
+      // 浏览器全屏显示编译器错误信息
       overlay: true,
-    // 公共文件，浏览器可直接访问，HMR必须
+      // 公共文件，浏览器可直接访问，HMR必须
       publicPath: '/'
     }
   }
